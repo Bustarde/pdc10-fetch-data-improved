@@ -1,20 +1,13 @@
 <?php
 
-//
-// This example uses data from the Sample Datasets in MongoDB Atlas
-// To load, and use this sample data, see https://docs.atlas.mongodb.com/sample-data/available-sample-datasets/
-//
+include "vendor/autoload.php";
 
-require_once __DIR__ . '/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+$client = new MongoDB\Client("mongodb://localhost:27017");
 
-$client = new MongoDB\Client(
-   'mongodb+srv://'.$_ENV['MDB_USER'].':'.$_ENV['MDB_PASS'].'@'.$_ENV['ATLAS_CLUSTER_SRV'].'/sample_restaurants'
-);
+$collection = $client->local->students;
+$result = $collection->deleteOne([
+   'studentId' => 'studentId',
+]);
 
-$collection = $client->sample_restaurants->restaurants;
-
-$deleteResult = $collection->deleteOne(['cuisine' => 'Hamburgers']); 
-
-printf("Deleted %d document(s)\n", $deleteResult->getDeletedCount());
+// header("Location: index.php");
+// exit();

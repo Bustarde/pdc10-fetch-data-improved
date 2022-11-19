@@ -1,21 +1,10 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+include "vendor/autoload.php";
 
-$client = new MongoDB\Client(
-   'mongodb+srv://'.$_ENV['MDB_USER'].':'.$_ENV['MDB_PASS'].'@'.$_ENV['ATLAS_CLUSTER_SRV'].'/test'
-);
-
-$collection = $client->test->users;
-
-$insertOneResult = $collection->insertOne([
-   'username' => 'admin',
-   'email' => 'admin@example.com',
-   'name' => 'Admin User',
+$mustache = new Mustache_Engine([
+	'loader' => new Mustache_Loader_FilesystemLoader('templates')
 ]);
 
-printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
-
-var_dump($insertOneResult->getInsertedId());
+$template = $mustache->loadTemplate('add');
+echo $template->render();
